@@ -1,126 +1,155 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Freelancer Rechner | Deinen Stundensatz ermitteln</title>
+    <title>FreelanceRate Pro | Calculate Your True Hourly Value</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        body { font-family: 'Inter', sans-serif; }
+        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
+        .glass { background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); }
+        input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900">
+<body class="text-slate-800 antialiased">
 
-    <header class="py-10 text-center">
-        <h1 class="text-4xl font-extrabold tracking-tight text-blue-600 mb-2">FreelanceCalc</h1>
-        <p class="text-slate-500">Berechne deinen idealen Stundensatz basierend auf deinen Kosten.</p>
-    </header>
+    <!-- Navigation -->
+    <nav class="max-w-5xl mx-auto px-6 py-8 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center shadow-lg shadow-indigo-200">
+                <span class="text-white font-bold">F</span>
+            </div>
+            <span class="text-xl font-bold tracking-tight">Freelance<span class="text-indigo-600">Rate</span></span>
+        </div>
+        <div class="hidden md:block text-sm text-slate-500 font-medium">Global Business Tool v1.2</div>
+    </nav>
 
-    <main class="max-w-4xl mx-auto px-4 pb-20">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+    <main class="max-w-5xl mx-auto px-6">
+        <!-- Hero Section -->
+        <header class="mb-12">
+            <h1 class="text-3xl md:text-5xl font-extrabold text-slate-900 leading-tight mb-4 text-balance">
+                Calculate your <span class="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-blue-500">true market value.</span>
+            </h1>
+            <p class="text-lg text-slate-600 max-w-2xl">Precision calculation for freelancers & solopreneurs. Factors in taxes, insurance, and non-billable time.</p>
+        </header>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
             
-            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-                <h2 class="text-xl font-bold mb-6">Deine Parameter</h2>
-                
-                <div class="space-y-4">
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Wunsch-Nettoeinkommen (Monat)</label>
-                        <input type="number" id="netIncome" value="3000" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
+            <!-- Input (Left) -->
+            <div class="lg:col-span-7 space-y-6">
+                <div class="bg-white p-6 md:p-8 rounded-3xl shadow-xl shadow-slate-200/50 border border-slate-100">
+                    <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-8 flex items-center gap-2">
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full"></span> Income & Expenses
+                    </h2>
                     
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Betriebsausgaben (Monat)</label>
-                        <input type="number" id="expenses" value="500" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        <p class="text-xs text-slate-400 mt-1">Software, Miete, Versicherungen...</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-slate-700">Desired Net Income (Monthly)</label>
+                            <div class="relative">
+                                <input type="number" id="netIncome" value="4000" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-indigo-500 transition-all outline-none text-lg font-medium">
+                                <span class="absolute right-4 top-4 text-slate-400">$</span>
+                            </div>
+                        </div>
+                        <div class="space-y-2">
+                            <label class="text-sm font-semibold text-slate-700">Business Expenses (Monthly)</label>
+                            <div class="relative">
+                                <input type="number" id="expenses" value="800" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-indigo-500 transition-all outline-none text-lg font-medium">
+                                <span class="absolute right-4 top-4 text-slate-400">$</span>
+                            </div>
+                        </div>
                     </div>
 
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Einkommensteuer & Vorsorge (%)</label>
-                        <input type="number" id="taxRate" value="35" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-
-                    <hr class="my-4">
-
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Arbeitstage pro Jahr (Ø 250)</label>
-                        <input type="number" id="workDays" value="250" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Urlaub & Krankheitstage (Jahr)</label>
-                        <input type="number" id="offDays" value="40" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                    </div>
-
-                    <div>
-                        <label class="block text-sm font-medium mb-1">Abrechenbare Stunden pro Tag</label>
-                        <input type="number" id="billableHours" value="6" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
-                        <p class="text-xs text-slate-400 mt-1">Nicht jede Arbeitsstunde ist fakturierbar (Orga/Akquise).</p>
+                    <div class="mt-8 pt-8 border-t border-slate-50">
+                        <h2 class="text-sm font-bold uppercase tracking-wider text-slate-400 mb-8 flex items-center gap-2">
+                            <span class="w-2 h-2 bg-blue-400 rounded-full"></span> Time Parameters
+                        </h2>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-slate-700">Vacation/Sick Days (Yearly)</label>
+                                <input type="number" id="offDays" value="30" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-blue-400 transition-all outline-none text-lg font-medium">
+                            </div>
+                            <div class="space-y-2">
+                                <label class="text-sm font-semibold text-slate-700">Billable Hours (Per Day)</label>
+                                <input type="number" id="billableHours" value="5" class="w-full bg-slate-50 border-none rounded-xl p-4 focus:ring-2 focus:ring-blue-400 transition-all outline-none text-lg font-medium">
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div class="flex flex-col space-y-6">
-                <div class="bg-blue-600 text-white p-8 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center">
-                    <h2 class="text-lg font-semibold opacity-90">Empfohlener Stundensatz</h2>
-                    <div class="text-5xl font-black my-4" id="resultRate">0,00 €</div>
-                    <p class="text-sm opacity-80">(netto, zzgl. MwSt.)</p>
-                </div>
+            <!-- Result (Right) -->
+            <div class="lg:col-span-5 lg:sticky lg:top-8">
+                <div class="bg-indigo-600 rounded-3xl p-8 text-white shadow-2xl shadow-indigo-200 overflow-hidden relative">
+                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500 rounded-full blur-3xl opacity-50"></div>
+                    
+                    <h3 class="text-indigo-200 font-medium mb-2 relative z-10">Recommended Hourly Rate</h3>
+                    <div class="text-5xl md:text-6xl font-bold mb-6 relative z-10" id="resultRate">0 $</div>
+                    
+                    <div class="space-y-4 relative z-10">
+                        <div class="flex justify-between text-sm border-b border-indigo-500 pb-2">
+                            <span class="text-indigo-100">Annual Revenue Target</span>
+                            <span class="font-bold" id="yearRevenue">0 $</span>
+                        </div>
+                        <div class="flex justify-between text-sm border-b border-indigo-500 pb-2">
+                            <span class="text-indigo-100">Billable Hours / Year</span>
+                            <span class="font-bold" id="totalHours">0 h</span>
+                        </div>
+                    </div>
 
-                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-                    <h3 class="font-bold mb-3">Zusammenfassung</h3>
-                    <ul class="text-sm space-y-2 text-slate-600">
-                        <li class="flex justify-between"><span>Jahresumsatz nötig:</span> <span id="yearRevenue" class="font-semibold">0 €</span></li>
-                        <li class="flex justify-between"><span>Arbeitstage/Jahr:</span> <span id="actualDays" class="font-semibold">0</span></li>
-                        <li class="flex justify-between"><span>Billable Hours/Jahr:</span> <span id="totalHours" class="font-semibold">0</span></li>
-                    </ul>
+                    <button class="w-full mt-8 bg-white text-indigo-600 font-bold py-4 rounded-xl hover:bg-indigo-50 transition-colors shadow-lg">
+                        Export Detailed Report
+                    </button>
+                </div>
+                
+                <!-- Ad Placeholder -->
+                <div class="mt-6 p-4 border-2 border-dashed border-slate-200 rounded-3xl text-center text-slate-400 text-xs font-medium uppercase tracking-widest py-12 bg-white/50">
+                    Sponsor / Google Ads Placeholder
                 </div>
             </div>
         </div>
 
-        <section class="mt-16 prose prose-slate max-w-none">
-            <h2 class="text-2xl font-bold mb-4">Warum ist die Berechnung des Stundensatzes so wichtig?</h2>
-            <p>Viele Freelancer kalkulieren zu knapp. Ein Stundensatz muss nicht nur deine Miete decken, sondern auch deine Altersvorsorge, Versicherungen, Kranktage und unbezahlte Zeiten für Buchhaltung und Marketing.</p>
-            <p>Nutze diesen Rechner, um eine realistische Basis für deine Preisverhandlungen zu schaffen. Beachte: Ein hoher Stundensatz signalisiert dem Kunden oft auch eine höhere Qualität deiner Arbeit.</p>
-        </section>
+        <!-- SEO Content -->
+        <article class="mt-20 max-w-3xl pb-20">
+            <h2 class="text-2xl font-bold text-slate-900 mb-4">Why Pricing Your Services Correctly is Vital</h2>
+            <p class="text-slate-600 leading-relaxed mb-4">
+                Setting your hourly rate isn't just about covering your rent. As a freelancer, you are a business. Your rate must account for taxes, health insurance, retirement contributions, and the "hidden" hours spent on admin, marketing, and sales.
+            </p>
+            <p class="text-slate-600 leading-relaxed">
+                Use this calculator to find your break-even point and ensure you are charging enough to sustain a healthy professional lifestyle. Remember: charging a premium rate often attracts higher-quality clients who value expertise over the lowest price.
+            </p>
+        </article>
     </main>
 
-    <footer class="py-10 border-t border-slate-200 text-center text-slate-400 text-xs">
-        &copy; 2026 FreelanceCalc | Dein Tool für den Erfolg.
+    <footer class="text-center py-12 text-slate-400 text-sm border-t border-slate-100 mt-10">
+        &copy; 2026 FreelanceRate Pro. All rights reserved.
     </footer>
 
     <script>
-        function calculate() {
-            // Inputs
+        const taxRate = 30; // Estimated for Taxes & Social Security
+        const workDaysYear = 260; // Standard weekdays
+
+        function update() {
             const netIncome = parseFloat(document.getElementById('netIncome').value) || 0;
             const expenses = parseFloat(document.getElementById('expenses').value) || 0;
-            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
-            const workDays = parseFloat(document.getElementById('workDays').value) || 0;
             const offDays = parseFloat(document.getElementById('offDays').value) || 0;
             const billableHours = parseFloat(document.getElementById('billableHours').value) || 0;
 
-            // Logik
-            const monthlyGrossNeeded = (netIncome + expenses) / (1 - (taxRate / 100));
-            const yearlyRevenueNeeded = monthlyGrossNeeded * 12;
+            const grossMonthly = (netIncome + expenses) / (1 - (taxRate / 100));
+            const grossYearly = grossMonthly * 12;
             
-            const actualWorkDays = workDays - offDays;
-            const totalBillableHoursYear = actualWorkDays * billableHours;
+            const actualDays = workDaysYear - offDays;
+            const hoursPerYear = actualDays * billableHours;
             
-            const hourlyRate = totalBillableHoursYear > 0 ? yearlyRevenueNeeded / totalBillableHoursYear : 0;
+            const rate = hoursPerYear > 0 ? grossYearly / hoursPerYear : 0;
 
-            // Outputs
-            document.getElementById('resultRate').innerText = hourlyRate.toLocaleString('de-DE', {style: 'currency', currency: 'EUR'});
-            document.getElementById('yearRevenue').innerText = yearlyRevenueNeeded.toLocaleString('de-DE', {style: 'currency', currency: 'EUR'});
-            document.getElementById('actualDays').innerText = actualWorkDays;
-            document.getElementById('totalHours').innerText = totalBillableHoursYear;
+            document.getElementById('resultRate').innerText = Math.round(rate) + " $";
+            document.getElementById('yearRevenue').innerText = Math.round(grossYearly).toLocaleString('en-US') + " $";
+            document.getElementById('totalHours').innerText = Math.round(hoursPerYear) + " h";
         }
 
-        // Event Listener für Echtzeit-Update
-        const inputs = document.querySelectorAll('input');
-        inputs.forEach(input => input.addEventListener('input', calculate));
-
-        // Initialer Call
-        calculate();
+        document.querySelectorAll('input').forEach(input => input.addEventListener('input', update));
+        update();
     </script>
 </body>
 </html>
