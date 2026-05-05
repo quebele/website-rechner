@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freelancer Rechner | Deinen Stundensatz ermitteln</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <header class="py-10 text-center">
+        <h1 class="text-4xl font-extrabold tracking-tight text-blue-600 mb-2">FreelanceCalc</h1>
+        <p class="text-slate-500">Berechne deinen idealen Stundensatz basierend auf deinen Kosten.</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 pb-20">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            
+            <div class="bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+                <h2 class="text-xl font-bold mb-6">Deine Parameter</h2>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Wunsch-Nettoeinkommen (Monat)</label>
+                        <input type="number" id="netIncome" value="3000" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Betriebsausgaben (Monat)</label>
+                        <input type="number" id="expenses" value="500" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="text-xs text-slate-400 mt-1">Software, Miete, Versicherungen...</p>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Einkommensteuer & Vorsorge (%)</label>
+                        <input type="number" id="taxRate" value="35" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Arbeitstage pro Jahr (Ø 250)</label>
+                        <input type="number" id="workDays" value="250" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Urlaub & Krankheitstage (Jahr)</label>
+                        <input type="number" id="offDays" value="40" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium mb-1">Abrechenbare Stunden pro Tag</label>
+                        <input type="number" id="billableHours" value="6" class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none">
+                        <p class="text-xs text-slate-400 mt-1">Nicht jede Arbeitsstunde ist fakturierbar (Orga/Akquise).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex flex-col space-y-6">
+                <div class="bg-blue-600 text-white p-8 rounded-2xl shadow-xl flex flex-col justify-center items-center text-center">
+                    <h2 class="text-lg font-semibold opacity-90">Empfohlener Stundensatz</h2>
+                    <div class="text-5xl font-black my-4" id="resultRate">0,00 €</div>
+                    <p class="text-sm opacity-80">(netto, zzgl. MwSt.)</p>
+                </div>
+
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+                    <h3 class="font-bold mb-3">Zusammenfassung</h3>
+                    <ul class="text-sm space-y-2 text-slate-600">
+                        <li class="flex justify-between"><span>Jahresumsatz nötig:</span> <span id="yearRevenue" class="font-semibold">0 €</span></li>
+                        <li class="flex justify-between"><span>Arbeitstage/Jahr:</span> <span id="actualDays" class="font-semibold">0</span></li>
+                        <li class="flex justify-between"><span>Billable Hours/Jahr:</span> <span id="totalHours" class="font-semibold">0</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <section class="mt-16 prose prose-slate max-w-none">
+            <h2 class="text-2xl font-bold mb-4">Warum ist die Berechnung des Stundensatzes so wichtig?</h2>
+            <p>Viele Freelancer kalkulieren zu knapp. Ein Stundensatz muss nicht nur deine Miete decken, sondern auch deine Altersvorsorge, Versicherungen, Kranktage und unbezahlte Zeiten für Buchhaltung und Marketing.</p>
+            <p>Nutze diesen Rechner, um eine realistische Basis für deine Preisverhandlungen zu schaffen. Beachte: Ein hoher Stundensatz signalisiert dem Kunden oft auch eine höhere Qualität deiner Arbeit.</p>
+        </section>
+    </main>
+
+    <footer class="py-10 border-t border-slate-200 text-center text-slate-400 text-xs">
+        &copy; 2026 FreelanceCalc | Dein Tool für den Erfolg.
+    </footer>
+
+    <script>
+        function calculate() {
+            // Inputs
+            const netIncome = parseFloat(document.getElementById('netIncome').value) || 0;
+            const expenses = parseFloat(document.getElementById('expenses').value) || 0;
+            const taxRate = parseFloat(document.getElementById('taxRate').value) || 0;
+            const workDays = parseFloat(document.getElementById('workDays').value) || 0;
+            const offDays = parseFloat(document.getElementById('offDays').value) || 0;
+            const billableHours = parseFloat(document.getElementById('billableHours').value) || 0;
+
+            // Logik
+            const monthlyGrossNeeded = (netIncome + expenses) / (1 - (taxRate / 100));
+            const yearlyRevenueNeeded = monthlyGrossNeeded * 12;
+            
+            const actualWorkDays = workDays - offDays;
+            const totalBillableHoursYear = actualWorkDays * billableHours;
+            
+            const hourlyRate = totalBillableHoursYear > 0 ? yearlyRevenueNeeded / totalBillableHoursYear : 0;
+
+            // Outputs
+            document.getElementById('resultRate').innerText = hourlyRate.toLocaleString('de-DE', {style: 'currency', currency: 'EUR'});
+            document.getElementById('yearRevenue').innerText = yearlyRevenueNeeded.toLocaleString('de-DE', {style: 'currency', currency: 'EUR'});
+            document.getElementById('actualDays').innerText = actualWorkDays;
+            document.getElementById('totalHours').innerText = totalBillableHoursYear;
+        }
+
+        // Event Listener für Echtzeit-Update
+        const inputs = document.querySelectorAll('input');
+        inputs.forEach(input => input.addEventListener('input', calculate));
+
+        // Initialer Call
+        calculate();
+    </script>
+</body>
+</html>
